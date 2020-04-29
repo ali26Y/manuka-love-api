@@ -1,3 +1,5 @@
+org: attayeecode
+app: manuka-love-api
 service: manuka-api
 
 provider:
@@ -5,16 +7,26 @@ provider:
   runtime: nodejs12.x # set node.js runtime
   memorySize: 128 # set the maximum memory of the Lambdas in Megabytes
   timeout: 20 # the timeout is 10 seconds (default is 6 seconds)
-  stage: dev # setting the env stage to dev, this will be visible in the routes
-  region: us-east-1
+  stage: prod # setting the env stage to dev, this will be visible in the routes
+  region: ap-southeast-2
+  apiKeys:
+    - name: manukaApiKey
 
 functions: # add 4 functions for CRUD
   getOne:
     handler: handler.getOne
+    environment:
+        REACT_APP_MONGO_URI_STRING: ${env:REACT_APP_MONGO_URI_STRING}
+        REACT_APP_MONGO_USERNAME: ${env:REACT_APP_MONGO_USERNAME}
+        REACT_APP_MONGO_PASSWORD: ${env:REACT_APP_MONGO_PASSWORD}
+        REACT_APP_MONGO_DB: ${env:REACT_APP_MONGO_DB}
+
     events:
       - http:
           path: batch/{id} # path will be domain.name.com/dev/batch/1
           method: get
           cors: true
+          private: true
 plugins:
-- serverless-offline # adding the plugin to be able to run the offline emulation
+    - serverless-offline # adding the plugin to be able to run the offline emulation
+    - serverless-dotenv-plugin
