@@ -1,0 +1,20 @@
+service: manuka-api
+
+provider:
+  name: aws
+  runtime: nodejs12.x # set node.js runtime
+  memorySize: 128 # set the maximum memory of the Lambdas in Megabytes
+  timeout: 20 # the timeout is 10 seconds (default is 6 seconds)
+  stage: dev # setting the env stage to dev, this will be visible in the routes
+  region: us-east-1
+
+functions: # add 4 functions for CRUD
+  getOne:
+    handler: handler.getOne
+    events:
+      - http:
+          path: batch/{id} # path will be domain.name.com/dev/batch/1
+          method: get
+          cors: true
+plugins:
+- serverless-offline # adding the plugin to be able to run the offline emulation
