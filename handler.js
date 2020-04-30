@@ -13,6 +13,9 @@ module.exports.getOne = (event, context, callback) => {
                         .then(beekeeperData =>  {
                             callback(null, {
                                 statusCode: 200,
+                                headers: {
+                                    'Access-Control-Allow-Origin': '*',
+                                },
                                 body: JSON.stringify({
                                     ...data._doc,
                                     beekeeper: {
@@ -24,7 +27,10 @@ module.exports.getOne = (event, context, callback) => {
                 })
                 .catch(err => callback(null, {
                     statusCode: err.statusCode || 500,
-                    headers: { 'Content-Type': 'text/plain' },
+                    headers: { 
+                        'Content-Type': 'text/plain',
+                        'Access-Control-Allow-Origin': '*',
+                    },
                     body: 'Could not fetch the note.'
                 }));
         })
