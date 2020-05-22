@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 let isConnected;
 
-module.exports = connectToDatabase = () => {
+module.exports = connectToDatabase = async () => {
     if (isConnected) {
         return Promise.resolve();
     }
